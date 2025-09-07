@@ -1,0 +1,83 @@
+{
+  "$schema": "https://raw.githubusercontent.com/getcursor/cursor-rules/main/schema.json",
+  "project": {
+    "name": "Net9GraphQLTasks",
+    "description": "ASP.NET Core 9 Web API with GraphQL (HotChocolate) and EF Core SQL Server for Task Management.",
+    "framework": "net9.0",
+    "type": "aspnetcore-webapi",
+    "languages": ["csharp", "graphql", "sql"],
+    "database": {
+      "provider": "sqlserver",
+      "schemaFile": "Database/Schema.sql"
+    }
+  },
+  "guidelines": {
+    "graphql": {
+      "description": "Define a GraphQL schema for tasks with id, title, description, and status fields. Implement createTask, updateTaskStatus mutations, and getAllTasks query.",
+      "operations": [
+        "Query: getAllTasks returns all Task records",
+        "Mutation: createTask(title, description, status) creates a Task",
+        "Mutation: updateTaskStatus(id, status) updates a Task status"
+      ]
+    },
+    "database": {
+      "orm": "Entity Framework Core",
+      "migrations": true,
+      "tables": [
+        {
+          "name": "Tasks",
+          "columns": [
+            {"name": "Id", "type": "int", "primaryKey": true, "identity": true},
+            {"name": "Title", "type": "nvarchar(200)", "nullable": false},
+            {"name": "Description", "type": "nvarchar(2000)", "nullable": true},
+            {"name": "Status", "type": "int", "nullable": false}
+          ]
+        }
+      ]
+    },
+    "architecture": {
+      "layers": [
+        "Models: Contains TaskItem entity and enums",
+        "Data: EF Core DbContext and configuration",
+        "GraphQL: Query, Mutation, ErrorFilter",
+        "Program.cs: Minimal API configuration and startup logic"
+      ]
+    },
+    "errorHandling": {
+      "globalErrorHandler": true,
+      "graphqlErrorFilter": true,
+      "returnType": "ProblemDetails for REST, Error codes for GraphQL"
+    },
+    "quality": {
+      "logging": "Use Serilog for structured logging",
+      "style": "Follow Microsoft .NET coding conventions"
+    }
+  },
+  "files": {
+    "important": [
+      "Program.cs",
+      "Models/TaskItem.cs",
+      "Data/AppDbContext.cs",
+      "GraphQL/Query.cs",
+      "GraphQL/Mutation.cs",
+      "GraphQL/ErrorFilter.cs",
+      "Database/Schema.sql"
+    ]
+  },
+  "tasks": {
+    "codegen": [
+      "Generate GraphQL schema types and resolvers based on EF Core models",
+      "Sync EF Core migrations with Database/Schema.sql script"
+    ]
+  },
+  "examples": {
+    "graphql": {
+      "queryAll": "query { getAllTasks { id title description status } }",
+      "create": "mutation { createTask(title: \"New Task\", description: \"Test task\", status: Pending) { id title status } }",
+      "updateStatus": "mutation { updateTaskStatus(id: 1, status: Completed) { id title status } }"
+    },
+    "sql": {
+      "schema": "CREATE TABLE Tasks (Id INT IDENTITY(1,1) PRIMARY KEY, Title NVARCHAR(200) NOT NULL, Description NVARCHAR(2000) NULL, Status INT NOT NULL);"
+    }
+  }
+}

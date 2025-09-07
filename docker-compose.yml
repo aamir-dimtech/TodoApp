@@ -1,0 +1,32 @@
+services:
+  todo-api:
+    build:
+      context: ./TodoApi
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    networks:
+      - todo-network
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    container_name: todo-api
+
+  todo-frontend:
+    build:
+      context: ./TodoFrontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    networks:
+      - todo-network
+    depends_on:
+      - todo-api
+    environment:
+      - REACT_APP_API_URL=http://todo-api:8080
+    container_name: todo-frontend
+
+networks:
+  todo-network:
+    driver: bridge

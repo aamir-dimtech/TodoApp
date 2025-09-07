@@ -1,0 +1,25 @@
+enum ApiTaskStatus {
+  PENDING
+  COMPLETED
+}
+
+type Task {
+  id: ID!
+  title: String!
+  description: String
+  status: ApiTaskStatus!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Query {
+  getAllTasks: [Task!]!
+  getTaskById(id: ID!): Task
+}
+
+type Mutation {
+  createTask(title: String!, description: String, status: ApiTaskStatus!): Task!
+  updateTaskStatus(id: ID!, status: ApiTaskStatus!): Task!
+  updateTask(id: ID!, title: String, description: String, status: ApiTaskStatus): Task!
+  deleteTask(id: ID!): Boolean
+}

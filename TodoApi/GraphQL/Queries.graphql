@@ -1,0 +1,63 @@
+# GraphQL Queries and Mutations for TodoApi
+
+# Query to get all tasks
+query GetAllTasks {
+  getAllTasks {
+    id
+    title
+    description
+    status
+    createdAt
+    updatedAt
+  }
+}
+
+# Query to get a specific task by ID
+query GetTaskById($id: Int!) {
+  getTaskById(id: $id) {
+    id
+    title
+    description
+    status
+    createdAt
+    updatedAt
+  }
+}
+
+# Mutation to create a new task
+mutation CreateTask($title: String!, $description: String, $status: ApiTaskStatus!) {
+  createTask(title: $title, description: $description, status: $status) {
+    id
+    title
+    description
+    status
+    createdAt
+  }
+}
+
+# Mutation to update task status
+mutation UpdateTaskStatus($id: Int!, $status: ApiTaskStatus!) {
+  updateTaskStatus(id: $id, status: $status) {
+    id
+    title
+    description
+    status
+    updatedAt
+  }
+}
+
+# Mutation to update a task
+mutation UpdateTask($id: Int!, $title: String, $description: String, $status: ApiTaskStatus) {
+  updateTask(id: $id, title: $title, description: $description, status: $status) {
+    id
+    title
+    description
+    status
+    updatedAt
+  }
+}
+
+# Mutation to delete a task
+mutation DeleteTask($id: Int!) {
+  deleteTask(id: $id)
+}
